@@ -1,4 +1,4 @@
-from flask import Flask,request,url_for,render_template,flash
+from flask import Flask,request,url_for,render_template,flash,abort
 from models import User
 import sys
 
@@ -65,6 +65,20 @@ def login():
     else:
         flash("user or pass error")
         return render_template("fla.html")
+
+#捕获http错误
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
+
+
+@app.route('/users/<id>')
+def users(id):
+    if int(id) == 1:
+        return render_template("user.html")
+
+    else:
+        abort(404)  #不等于1则抛出404异常
 
 
 if __name__ == '__main__':
