@@ -1,4 +1,4 @@
-from flask import Flask,request,url_for,render_template
+from flask import Flask,request,url_for,render_template,flash
 from models import User
 import sys
 
@@ -39,7 +39,32 @@ def two_base():
     return render_template("two_base.html")
 
 
+#flask的消息闪现机制
+app.secret_key = '123'
+@app.route('/fla')
+def fla():
+    flash("flash dead")
+    return render_template("fla.html")
 
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = request.form
+    username = form.get('username')
+    password = form.get('password')
+
+    if not username:
+        flash("pls input username")
+        return render_template("fla.html")
+    if not password:
+        flash("pls input password")
+        return render_template("fla.html")
+    if username == 'flower' and password == '123369':
+        flash("login success")
+        return render_template("fla.html")
+    else:
+        flash("user or pass error")
+        return render_template("fla.html")
 
 
 if __name__ == '__main__':
